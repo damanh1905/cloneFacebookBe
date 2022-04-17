@@ -1,24 +1,39 @@
 package com.example.clonefb.controller;
 
-import com.example.clonefb.exception.NotfoundException;
+import com.example.clonefb.model.dto.PostDto;
+import com.example.clonefb.model.mapper.MapperPost;
+import com.example.clonefb.model.request.CreatePostReq;
+import com.example.clonefb.service.IPostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 
 public class PostController {
-    @GetMapping("/add")
-    public ResponseEntity<?> addPost(@RequestParam String name){
-      if(!name.equalsIgnoreCase("a")){
-          throw  new NotfoundException("not found name");
-      }
-      return ResponseEntity.ok(name);
+    @Autowired
+    IPostService postService;
+
+    @PostMapping("/addPost")
+    public ResponseEntity<PostDto> addPost(@RequestBody CreatePostReq createPostReq) {
+        PostDto postDto = MapperPost.toPostDto(createPostReq);
+        postDto = postService.addPost(postDto);
+        return ResponseEntity.ok(postDto);
+
     }
+
     @GetMapping("/")
     public String index() {
         return "Welcome to user";
+    }
+    @GetMapping("/getListPost")
+    public ResponseEntity<List<PostDto>> getAllPost(){
+         List<PostDto> listPost =  postService.getListPost();
+        return ResponseEntity.ok(listPost);
     }
 }

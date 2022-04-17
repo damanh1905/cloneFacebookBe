@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 @Data
 @Builder
 @NoArgsConstructor
@@ -14,7 +13,7 @@ import java.util.Date;
 public class PostEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userID;
+    private long postID;
     @Column
     private String post;
     @Column
